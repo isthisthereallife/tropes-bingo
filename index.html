@@ -12,12 +12,26 @@
     <header id="header">
       <div id="filler"></div>
       <h1 id="page_title">Tropes Bingo</h1>
-      <div id="hamburger_div">
+      <div id="hamburger_icon">
         <img id="hembrgr" src="images/hembrgr.png" />
       </div>
     </header>
+    <div id="hamburger_div">
+      <div class="hamburger_item">
+        <strong>Grid Size: </strong>
+        <span class="grid_size_btn" id="grid_size_lower">&#8249;</span>
+        <span id="grid_size">5</span>
+        <span class="grid_size_btn" id="grid_size_higher">&#8250;</span>
+      </div>
+    </div>
     <form id="search_form">
-      <input type="text" id="search_field" placeholder="Search here..." />
+      <input
+        type="text"
+        id="search_field"
+        placeholder="Search here..."
+        autocomplete="on"
+        autofocus
+      />
     </form>
     <hr />
 

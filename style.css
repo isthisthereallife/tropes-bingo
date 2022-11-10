@@ -1,6 +1,7 @@
 .body {
   background-color: white;
   color: black;
+  user-select: none;
 }
 a {
   color: rgb(8, 1, 64);
@@ -30,13 +31,34 @@ a:visited {
   font-size: 11vw;
   user-select: none;
 }
-#hamburger_div {
+#hamburger_icon {
   font-size: 1.3em;
   width: 10vw;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+#hamburger_div {
+  display: none;
+}
+.hamburger_item {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 8vw;
+}
+
+.grid_size_btn {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  width: 10vw;
+  font-size: 10vw;
+  margin: 4vw;
+  padding-bottom: 2vw;
 }
 
 textbox {
@@ -116,4 +138,12 @@ textbox {
 .board tr th {
   user-select: contain;
   background-color: rgba(0, 191, 255, 0.456);
+}
+#bingo_msg {
+  position: absolute;
+  font-size: 6em;
+  background-color: rgba(0, 191, 255, 0.7);
+  border-radius: 15%;
+  user-select: none;
+  pointer-events: none;
 }
