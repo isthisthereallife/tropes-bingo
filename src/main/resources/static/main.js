@@ -7,6 +7,7 @@ console.log("yeeeah")
 
 const table = document.getElementById("search_results_table")
 const board_div = document.getElementById("board_div")
+const board = document.createElement("table")
 let searchField = document.getElementById("search_field")
 let searchForm = document.getElementById("search_form")
 let hembrgr = document.getElementById("hembrgr")
@@ -110,7 +111,8 @@ hembrgr.onclick = ((e) => {
   })
 
   */
-
+  gridSizeLower.setAttribute("class", "grid_size_btn")
+  gridSizeHigher.setAttribute("class", "grid_size_btn")
 
   if (hamburgerDiv.getAttribute("class") === "hamburger_div_open") {
     hembrgr.setAttribute("src", "Images/hembrgr.png")
@@ -122,6 +124,7 @@ hembrgr.onclick = ((e) => {
     hamburgerDiv.setAttribute("class", "hamburger_div_open")
   }
 })
+
 if (searchField.value.length > 0) {
   searches(searchField.value, 1)
 }
@@ -133,6 +136,7 @@ reroll.onclick = ((e) => {
   hamburgerDiv.setAttribute("class", "hamburger_div_close")
   hembrgr.setAttribute("src", "Images/hembrgr.png")
   */
+  gridSizeHigher.setAttribute("class", "grid_size_btn")
   getAndDisplayTropes()
 })
 
@@ -261,7 +265,7 @@ async function getAndDisplayTropes() {
   //rensa board_div
   board_div.replaceChildren()
   //gör ett bräde
-  const board = document.createElement("table")
+  board.replaceChildren()
   board.setAttribute("id", "board")
   let z = 0
   for (let x = 0; x < gridSize; x++) {
@@ -359,21 +363,29 @@ async function getAndDisplayTropes() {
 
 
 gridSizeHigher.onclick = ((e) => {
-  gridSize++
-  gridSizeView.innerHTML = gridSize
-  console.log(board.rows)
-  console.log("board.rows.length:", board.rows.length)
-  console.log("gridsize:", gridSize)
-  if (gridSize < board.rows.length) {
-    for (let x = board.rows.length - 1; x >= gridSize; x--) {
-      for (let y = x; y >= gridSize; y--) {
-        let box = document.getElementById(x + "x" + y)
-        let box2 = document.getElementById(y + "x" + x)
-        //box.style.setProperty("background-color", "grey")
+  gridSizeHigher.setAttribute("class", "grid_size_btn")
+  if (gridSize < 5) {
+    gridSize++
+    gridSizeView.innerHTML = gridSize
+    console.log(board.rows)
+    console.log("board.rows.length:", board.rows.length)
+    console.log("gridsize:", gridSize)
+    if (gridSize < board.rows.length) {
+      for (let x = board.rows.length - 1; x >= gridSize; x--) {
+        for (let y = x; y >= gridSize; y--) {
+          let box = document.getElementById(x + "x" + y)
+          let box2 = document.getElementById(y + "x" + x)
+          //box.style.setProperty("background-color", "grey")
 
-        //console.log("box:", box)
+          //console.log("box:", box)
+        }
       }
     }
+  } else {
+    gridSizeHigher.setAttribute("class", "grid_size_btn_red")
+    // Indicate to user 
+    // No higher allowed
+    //window.alert("NO MORE")
   }
 })
 gridSizeLower.onclick = ((e) => {

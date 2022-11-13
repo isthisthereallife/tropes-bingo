@@ -170,6 +170,28 @@ a:visited {
   margin: 4vw;
   padding-bottom: 2vw;
 }
+.grid_size_btn_red {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  width: 10vw;
+  font-size: 10vw;
+  margin: 4vw;
+  padding-bottom: 2vw;
+  animation-name: example;
+  animation-duration: 4s;
+}
+
+@keyframes example {
+  from {
+    background-color: red;
+  }
+  to {
+    background-color: white;
+  }
+}
 
 #search_field {
   display: flex;

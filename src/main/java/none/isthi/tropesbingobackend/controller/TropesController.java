@@ -20,7 +20,6 @@ import java.util.Collections;
 public class TropesController {
 
     @GetMapping("search/{query}/{pageNumber}")
-    @CrossOrigin(origins = "http://localhost:5050")
     public String searchForItem(@PathVariable String query, @PathVariable int pageNumber) throws IOException {
         try {
             System.out.println("Searchquery: " + query);
@@ -42,11 +41,11 @@ public class TropesController {
     }
 
 
-    @PostMapping("/{gridSize}")
-    @CrossOrigin(origins = "http://localhost:5050")
-    public String getTropes(@PathVariable int gridSize, @RequestBody String url) throws IOException, NullPointerException {
+    @PostMapping("/{gridSizeInt}")
+    public String getTropes(@PathVariable int gridSizeInt, @RequestBody String url) throws IOException, NullPointerException {
         //supplying the end part of a url to a film
         //cut out the tropes, add to this list
+        int gridSize = gridSizeInt;
         if (5 <= gridSize) gridSize = 5;
         System.out.println("Asking for gridSize: " + gridSize + "tropes for work: " + url);
 
