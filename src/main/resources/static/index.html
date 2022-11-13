@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tropes Bingo</title>
+    <script defer src="main.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="body" id="wow_such_animate">
+    <header>
+      <div id="header">
+        <div id="filler"></div>
+        <h1 id="page_title">Tropes Bingo</h1>
+        <div id="hamburger_icon">
+          <img id="hembrgr" src="/Images/hembrgr.png" />
+        </div>
+      </div>
+      <div id="current_movie"></div>
+    </header>
+    <div id="hamburger_div" class="hamburger_div_close">
+      <div class="hamburger_item">
+        <div class="hamburger_item_name">
+          <strong>Grid Size </strong>
+        </div>
+        <div class="hamburger_item_options">
+          <span class="grid_size_btn" id="grid_size_lower">&#8249;</span>
+          <span id="grid_size">4</span>
+          <span class="grid_size_btn" id="grid_size_higher">&#8250;</span>
+        </div>
+      </div>
+      <div class="hamburger_item" id="reroll_div">
+        <div class="hamburger_item_name">
+          <strong>Reroll</strong>
+        </div>
+        <div class="hamburger_item_options">
+          <img class="reroller" id="reroll" src="Images/dice.png" />
+        </div>
+      </div>
+      <div class="hamburger_item" id="hamburger_search_div">
+        <div class="hamburger_item_name">
+          <strong>Search</strong>
+        </div>
+        <div class="hamburger_item_options">
+          <img id="search_img" src="Images/search.png" />
+        </div>
+      </div>
+    </div>
+    <form id="search_form">
+      <input
+        type="text"
+        id="search_field"
+        placeholder="Search here..."
+        autocomplete="on"
+        autofocus
+      />
+    </form>
+    <hr />
+
+    <table id="search_results_table"></table>
+
+    <div id="board_div"></div>
+    <br />
+    <hr />
+  </body>
+</html>
