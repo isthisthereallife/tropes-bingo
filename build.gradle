@@ -6,8 +6,8 @@ plugins {
 }
 
 group = 'none.isthi'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '13'
+version = '1.0'
+sourceCompatibility = '10'
 
 configurations {
 	compileOnly {
