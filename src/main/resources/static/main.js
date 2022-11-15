@@ -1,9 +1,6 @@
 
 
-console.log("document.location = ", document.location)
-
 let gridSize = 4
-console.log("yeeeah")
 
 const table = document.getElementById("search_results_table")
 const board_div = document.getElementById("board_div")
@@ -21,11 +18,16 @@ let rerollDiv = document.getElementById("reroll_div")
 let searchImg = document.getElementById("search_img")
 let currentMovieDiv = document.getElementById("current_movie")
 
+let touchTimer
+let touchDuration = 500
+let onLongTouch
 let activeGame
 let activeGameUrl
 
+let descrMsg = document.createElement("span")
 let bingoMsg = document.createElement("span")
 
+descrMsg.setAttribute("id", "descr_msg")
 bingoMsg.setAttribute("id", "bingo_msg")
 
 searchForm.addEventListener("submit", ((e) => {
@@ -44,73 +46,7 @@ async function searches(input, pageNr) {
 let wow = document.getElementById("wow_such_animate")
 
 
-
-
-
 hembrgr.onclick = ((e) => {
-  /*AnimationEvent.
-    document.getElementsByTagName("body").item(0).animate(
-  /*console.log(e.target)
-  console.log("KIILICK")
-  //hembrgr
-  document.getElementById("header").animate([
-    //keyfrems
-    0 %
-    {
-      transform: "translate(1px, 1px)",
-      transform: "rotate(0deg)"
-    },
-    10 % {
-      transform: "translate(-1px, -2px)",
-      tronsform: "rotate(-1deg)"
-    },
-    20 % {
-      transform: "translate(-3px, 0px)",
-      transform: "rotate(1deg)"
-    },
-    30 % {
-      transform: "translate(3px, 2px)",
-      transform: "rotate(0deg)"
-    },
-    40 % {
-      transform: "translate(1px, -1px)",
-      transform: "rotate(1deg)"
-    },
-    50 % {
-      transform: "translate(-1px, 2px)",
-      transform: "rotate(- 1deg);"
-    },
-    60 % {
-      transform: "translate(-3px, 1px)",
-      transform: "rotate(0deg)"
-    },
-    70 % {
-      transform: "translate(3px, 1px)",
-      transform: "rotate(- 1deg);"
-    },
-    80 % {
-      transform: "translate(-1px, -1px)",
-      transform: "rotate(1deg)"
-    },
-    90 % {
-      transform: "translate(1px, 2px)",
-      transform: "rotate(0deg)"
-    },
-    100 % {
-      transform: "translate(1px, -2px)",
-      transform: "rotate(- 1deg);"
-    },
-  ], {
-    //timings
-    duration: 10000,
-    iterations: Infinity
-
-
-
-
-  })
-
-  */
   gridSizeLower.setAttribute("class", "grid_size_btn")
   gridSizeHigher.setAttribute("class", "grid_size_btn")
 
@@ -163,7 +99,6 @@ hamburgerSearchDiv.onclick = ((e) => {
 function populateSearchResults(searchResults) {
   table.replaceChildren()
   if (searchResults === null || !searchResults.length) {
-    console.log("de va inget där")
     let nothinDiv = document.createElement("div")
     nothinDiv.setAttribute("class", "search_a")
     nothinDiv.setAttribute("id", "nothin_div")
@@ -279,6 +214,8 @@ async function getAndDisplayTropes() {
       td.setAttribute("id", x + "x" + y)
       text.textContent = tropeList[z].title
       text.setAttribute("class", "board_item_text")
+      text.setAttribute("title", tropeList[z].description)
+
       td.setAttribute("address", tropeList[z].address)
       td.setAttribute("ticked", "false")
 
@@ -313,20 +250,48 @@ async function getAndDisplayTropes() {
         window.open(td.getAttribute("address", "_blank"))
       })
 
+
+      function onLongTouch(e) {
+
+        descrMsg.innerText = td.getAttribute("title")
+        let a = document.createElement("a")
+        a.href = td.getAttribute("address")
+        a.target = "_blank"
+        a.innerText = "\nLink to trope page."
+
+        descrMsg.append(a)
+        board_div.append(descrMsg)
+        descrMsg.onclick = ((e) => {
+          descrMsg.innerText = ""
+          board_div.removeChild(descrMsg)
+        })
+      }
+      td.ontouchmove = ((e) => {
+        if (touchTimer) {
+          clearTimeout(touchTimer)
+          touchTimer = null
+        }
+      })
+
       td.ontouchstart = ((e) => {
-        //console.log("touched this:", e)
+        e.preventDefault()
+        if (!touchTimer) {
+          touchTimer = setTimeout(onLongTouch, touchDuration)
+        }
       })
 
-      this.ontouchend = ((e) => {
-        //when released, check if it was a looong click
-        //if so, show an alert lol
-        console.log(e)
 
+      td.ontouchend = ((e) => {
+        if (touchTimer) {
+          clearTimeout(touchTimer)
+          touchTimer = null
+        }
 
+        if (descrMsg.innerText === "") {
+          td.click()
+        }
       })
-
       td.onclick = ((e) => {
-        //console.log("clicked this:", e)
 
         if (td.getAttribute("ticked") === "true") {
           td.setAttribute("ticked", "false")
@@ -347,7 +312,6 @@ async function getAndDisplayTropes() {
         else {
           bingoMsg.innerText = ""
         }
-
       })
 
       z++
@@ -367,48 +331,14 @@ gridSizeHigher.onclick = ((e) => {
   if (gridSize < 5) {
     gridSize++
     gridSizeView.innerHTML = gridSize
-    console.log(board.rows)
-    console.log("board.rows.length:", board.rows.length)
-    console.log("gridsize:", gridSize)
-    if (gridSize < board.rows.length) {
-      for (let x = board.rows.length - 1; x >= gridSize; x--) {
-        for (let y = x; y >= gridSize; y--) {
-          let box = document.getElementById(x + "x" + y)
-          let box2 = document.getElementById(y + "x" + x)
-          //box.style.setProperty("background-color", "grey")
-
-          //console.log("box:", box)
-        }
-      }
-    }
   } else {
     gridSizeHigher.setAttribute("class", "grid_size_btn_red")
-    // Indicate to user 
-    // No higher allowed
-    //window.alert("NO MORE")
   }
 })
 gridSizeLower.onclick = ((e) => {
   if (gridSize > 1) {
     gridSize--
     gridSizeView.innerHTML = gridSize
-    console.log(board.rows)
-    console.log("board.rows.length:", board.rows.length)
-    console.log("gridsize:", gridSize)
-    if (gridSize < board.rows.length) {
-
-      for (let x = board.rows.length - 1; x >= gridSize; x--) {
-        for (let y = 0; x >= y; y++) {
-          let box = document.getElementById(x + "x" + y)
-          let box2 = document.getElementById(y + "x" + x)
-          /*
-          box.style.setProperty("background-color", "blue")
-          box2.style.setProperty("background-color", "red")
-*/
-          //console.log("box:", box)
-        }
-      }
-    }
   }
 
 })
@@ -416,7 +346,6 @@ gridSizeLower.onclick = ((e) => {
 function checkForBingo() {
 
   let boardSize = board.rows.length
-  console.log("boardSize: ", boardSize)
   let bingo = false
   //horizontal
   for (let row = 0; row < boardSize; row++) {
@@ -457,8 +386,6 @@ async function searchFromUserInput(input, pageNumber = "1") {
 
   let results = [{}]
   input = input.replace(/[\W_]+/g, ' ')
-  console.log("input is: ", input)
-  console.log("pageNumber is: ", pageNumber)
   const res = await fetch(document.location.href + "tropesbingo/search/" + input + "/" + pageNumber)
   if (res.headers.get("content-length") === "0") {
     return null

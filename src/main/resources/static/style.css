@@ -273,7 +273,21 @@ a:visited {
   position: absolute;
   font-size: 6em;
   background-color: rgba(0, 191, 255, 0.7);
-  border-radius: 15%;
+  border-radius: 5%;
   user-select: none;
   pointer-events: none;
+}
+
+#descr_msg {
+  position: absolute;
+  font-size: 1.6em;
+  max-width: fit-content;
+  background-color: rgb(240, 255, 255, 0.8);
+  border-radius: 5%;
+  user-select: none;
+  display: block;
+  justify-content: center;
+  border: 1px solid black;
+  margin-top: 5vh;
+  padding: 8px;
 }
