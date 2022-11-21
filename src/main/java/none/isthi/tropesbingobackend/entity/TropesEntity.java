@@ -4,22 +4,26 @@ public class TropesEntity {
     private String title;
     private String address;
     private String description;
+    private boolean ticked;
 
     public TropesEntity(){
         title = "Generic title";
         address= "www.example.com";
         description= "Generic Description";
+        ticked = false;
     }
 
     public TropesEntity(String title, String address){
         this.title = title;
         this.address = address;
         this.description = "description goes here";
+        this.ticked = false;
     }
-    public TropesEntity(String title, String address, String description){
+    public TropesEntity(String title, String address, String description, boolean ticked){
         this.title = title;
         this.address = address;
         this.description = description;
+        this.ticked = ticked;
     }
 
     public String getTitle() {
@@ -44,6 +48,14 @@ public class TropesEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isTicked() {
+        return ticked;
+    }
+
+    public void setTicked(boolean ticked) {
+        this.ticked = ticked;
     }
 
     @Override

@@ -22,7 +22,6 @@ public class TropesController {
     @GetMapping("search/{query}/{pageNumber}")
     public String searchForItem(@PathVariable String query, @PathVariable int pageNumber) throws IOException {
         try {
-            System.out.println("Searchquery: " + query);
             Document searchDoc = Jsoup.connect("https://tvtropes.org/pmwiki/elastic_search_result.php?q=" + query + "&page_type=work&search_type=article&page=" + pageNumber).get();
             Elements searchResults = searchDoc.select("a[class=search-result]");
             ArrayList<SearchResultEntity> searchResultEntities = new ArrayList<>();
@@ -35,7 +34,6 @@ public class TropesController {
             ObjectMapper om = new ObjectMapper();
             return om.writeValueAsString(searchResultEntities);
         } catch (MalformedURLException e) {
-            System.out.println("ERRRRORRR: \n\n" + e);
             return null;
         }
     }
@@ -47,7 +45,6 @@ public class TropesController {
         //cut out the tropes, add to this list
         int gridSize = gridSizeInt;
         if (5 <= gridSize) gridSize = 5;
-        System.out.println("Asking for gridSize: " + gridSize + "tropes for work: " + url);
 
         ArrayList<TropesEntity> tropeList = new ArrayList<>();
         try {
@@ -56,16 +53,16 @@ public class TropesController {
             for (Element aTag : aTagsInLi) {
                 assert aTag.parent() != null;
                 if (aTag.parent().html().startsWith("<a")) {
-                    TropesEntity tE = new TropesEntity(aTag.html(), aTag.absUrl("href"), aTag.parent().text());
+                    TropesEntity tE = new TropesEntity(aTag.html(), aTag.absUrl("href"), aTag.parent().text(),false);
                     tropeList.add(tE);
                 }
             }
             while (tropeList.size() < gridSize * gridSize) {
-                tropeList.add(new TropesEntity("FREE SPACE", "", "Not enough tropes listed on the page...¯\\_(ツ)_/¯"));
+                tropeList.add(new TropesEntity("FREE SPACE", "https://tvtropes.org"+url, "Not enough tropes listed on the page...¯\\_(ツ)_/¯",true));
             }
         } catch (HttpStatusException e) {
             while (tropeList.size() < gridSize * gridSize) {
-                tropeList.add(new TropesEntity("FREE SPACE", "", "404, that page didn't exist!"));
+                tropeList.add(new TropesEntity("FREE SPACE", "https://tvtropes.org"+url, "404, that page didn't exist!",true));
             }
         }
         ObjectMapper om = new ObjectMapper();
