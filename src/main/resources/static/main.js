@@ -345,20 +345,20 @@ async function getAndDisplayTropes(newSearch) {
           }
         })
         td.onclick = ((e) => {
-
           if (td.textContent !== "FREE SPACE") {
             if (td.getAttribute("ticked") === "true") {
               td.setAttribute("ticked", "false")
               td.style.setProperty("background-color", "white")
               td.style.setProperty("color", "black")
-              tropeList.find(e => e.title === td.textContent).ticked = false
+
+              tropeList.find(e => e.address === td.getAttribute("address")).ticked = false
 
             }
             else {
               td.setAttribute("ticked", "true")
               td.style.setProperty("background-color", "rgb(159, 6, 6)")
               td.style.setProperty("color", "rgb(255, 255, 255)")
-              tropeList.find(e => e.title === td.textContent).ticked = true
+              tropeList.find(e => e.address === td.getAttribute("address")).ticked = true
 
             }
             localStorage.setItem("tropeList", JSON.stringify(tropeList))
