@@ -298,12 +298,12 @@ async function getAndDisplayTropes(newSearch) {
          })
          */
         td.onauxclick = ((e) => {
+          e.preventDefault()
           window.open(td.getAttribute("address", "_blank"))
         })
 
 
-        function onLongTouch(e) {
-
+        function onLongTouch() {
           descrMsg.innerText = td.getAttribute("title")
           let spanForA = document.createElement("span")
 
@@ -319,12 +319,13 @@ async function getAndDisplayTropes(newSearch) {
             board_div.removeChild(descrMsg)
           })
         }
+
         td.ontouchmove = ((e) => {
           if (touchTimer) {
             clearTimeout(touchTimer)
             touchTimer = null
           }
-        })
+        }, { passive: true })
 
         td.ontouchstart = ((e) => {
           e.preventDefault()
@@ -334,18 +335,22 @@ async function getAndDisplayTropes(newSearch) {
         })
 
 
+
         td.ontouchend = ((e) => {
           if (touchTimer) {
             clearTimeout(touchTimer)
             touchTimer = null
           }
-
           if (descrMsg.innerText === "") {
             td.click()
           }
         })
+
         td.onclick = ((e) => {
-          if (td.textContent !== "FREE SPACE") {
+          if (e.ctrlKey) {
+            window.open(td.getAttribute("address", "_blank"))
+          }
+          else if (td.textContent !== "FREE SPACE") {
             if (td.getAttribute("ticked") === "true") {
               td.setAttribute("ticked", "false")
               td.style.setProperty("background-color", "white")
