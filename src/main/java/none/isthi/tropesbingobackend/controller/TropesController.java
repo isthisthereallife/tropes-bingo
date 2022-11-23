@@ -1,5 +1,6 @@
 package none.isthi.tropesbingobackend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import none.isthi.tropesbingobackend.entity.SearchResultEntity;
 import none.isthi.tropesbingobackend.entity.TropesEntity;
@@ -40,33 +41,72 @@ public class TropesController {
 
 
     @PostMapping("/{gridSizeInt}")
-    public String getTropes(@PathVariable int gridSizeInt, @RequestBody String url) throws IOException, NullPointerException {
+    public String getTropes(@PathVariable int gridSizeInt, @RequestBody String url) throws JsonProcessingException {
         //supplying the end part of a url to a film
         //cut out the tropes, add to this list
         int gridSize = gridSizeInt;
         if (5 <= gridSize) gridSize = 5;
 
         ArrayList<TropesEntity> tropeList = new ArrayList<>();
+
         try {
             Document tropeDoc = Jsoup.connect("https://tvtropes.org" + url).get();
-            Elements aTagsInLi = tropeDoc.select("ul li a:eq(0).twikilink[title^=/pmwiki/pmwiki.php/Main/]");
-            for (Element aTag : aTagsInLi) {
-                assert aTag.parent() != null;
-                if (aTag.parent().html().startsWith("<a")) {
-                    TropesEntity tE = new TropesEntity(aTag.html(), aTag.absUrl("href"), aTag.parent().text(),false);
-                    tropeList.add(tE);
-                }
+            tropeList = basicGetTropes(tropeDoc);
+
+
+            if (tropeList.size() == 0) {
+                // no tropes? maybe in sub pages (i.e tropesAtoB)
+                tropeList = subPagesGetTropes(tropeDoc, url);
             }
+
+
             while (tropeList.size() < gridSize * gridSize) {
-                tropeList.add(new TropesEntity("FREE SPACE", "https://tvtropes.org"+url, "Not enough tropes listed on the page...¯\\_(ツ)_/¯",true));
+                //if we're here, we've got a valid page but it ain't got enough tropes
+                tropeList.add(new TropesEntity("FREE SPACE", "https://tvtropes.org" + url, "Not enough tropes listed on the page...¯\\_(ツ)_/¯", true));
             }
-        } catch (HttpStatusException e) {
+        } catch (IOException e) {
+            //if we're here, we've probably not got a valid page
             while (tropeList.size() < gridSize * gridSize) {
-                tropeList.add(new TropesEntity("FREE SPACE", "https://tvtropes.org"+url, "404, that page didn't exist!",true));
+                tropeList.add(new TropesEntity("FREE SPACE", "https://tvtropes.org" + url, "404, that page didn't exist!", true));
             }
         }
         ObjectMapper om = new ObjectMapper();
         Collections.shuffle(tropeList);
         return om.writeValueAsString(tropeList);
     }
+
+
+    private ArrayList<TropesEntity> basicGetTropes(Document tropeDoc) {
+        Elements aTagsInLi = tropeDoc.select("ul li a:eq(0).twikilink[title^=/pmwiki/pmwiki.php/Main/]");
+        ArrayList<TropesEntity> tropes = new ArrayList<>();
+        for (Element aTag : aTagsInLi) {
+            assert aTag.parent() != null;
+            if (aTag.parent().html().startsWith("<a")) {
+                TropesEntity tE = new TropesEntity(aTag.html(), aTag.absUrl("href"), aTag.parent().text(), false);
+                tropes.add(tE);
+            }
+        }
+        return tropes;
+    }
+
+    private ArrayList<TropesEntity> subPagesGetTropes(Document tropeDoc, String url) throws IOException {
+        ArrayList<TropesEntity> tropes = new ArrayList<>();
+
+        String subUrl = url.substring(url.lastIndexOf("/")+1);
+        String[] split = url.split("/");
+        String uri = "";
+        for (int i =0;i<split.length-2;i++){
+            uri = uri.concat(split[i]+"/");
+        }
+        uri = uri.concat(subUrl);
+
+        Elements subPages = tropeDoc.select("ul li a:eq(0).twikilink[title^=" + uri + "]");
+
+        for (Element page : subPages) {
+            Document pageDoc = Jsoup.connect("https://tvtropes.org"+page.attributes().get("href")).get();
+            tropes.addAll(basicGetTropes(pageDoc));
+        }
+        return tropes;
+    }
+
 }

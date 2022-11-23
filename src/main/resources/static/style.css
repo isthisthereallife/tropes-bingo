@@ -250,14 +250,14 @@ a:visited {
 
 #descr_msg {
   position: absolute;
-  top: 30px;
-  bottom: 30px;
+  top: 23%;
   font-size: 1.6em;
   max-width: fit-content;
   background-color: rgb(240, 255, 255, 0.8);
-  border-radius: 5%;
+  border-radius: 5px;
   user-select: none;
-  display: block;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   border: 1px solid black;
   margin-top: 5vh;

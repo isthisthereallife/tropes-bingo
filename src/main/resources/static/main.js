@@ -115,6 +115,7 @@ reroll.onclick = ((e) => {
   gridSizeHigher.setAttribute("class", "grid_size_btn")
   tropeList = null
   localStorage.removeItem("tropeList")
+  localStorage.setItem("gridSize", gridSize)
   getAndDisplayTropes()
 })
 
@@ -164,7 +165,6 @@ function populateSearchResults(searchResults) {
       img.src = item.imgUrl
       img.height = "60"
       tableDataImg.appendChild(img)
-
       let a = document.createElement("a")
       a.setAttribute("href", `https://tvtropes.org` + item.address)
 
@@ -197,6 +197,7 @@ function populateSearchResults(searchResults) {
         hembrgr.setAttribute("src", "Images/hembrgr.png")
         localStorage.setItem("currentWorkTitle", e.target.attributes.title.nodeValue)
         localStorage.setItem("currentWorkUrl", e.target.attributes.link.nodeValue)
+        localStorage.setItem("gridSize", gridSize)
         getAndDisplayTropes(true)
       })
 
@@ -304,12 +305,14 @@ async function getAndDisplayTropes(newSearch) {
         function onLongTouch(e) {
 
           descrMsg.innerText = td.getAttribute("title")
+          let spanForA = document.createElement("span")
+
           let a = document.createElement("a")
           a.href = td.getAttribute("address")
           a.target = "_blank"
           a.innerText = "\nLink to trope page."
-
-          descrMsg.append(a)
+          spanForA.appendChild(a)
+          descrMsg.append(spanForA)
           board_div.append(descrMsg)
           descrMsg.onclick = ((e) => {
             descrMsg.innerText = ""
@@ -384,7 +387,6 @@ gridSizeHigher.onclick = ((e) => {
   if (gridSize < 5) {
     gridSize++
     gridSizeView.innerHTML = gridSize
-    localStorage.setItem("gridSize", gridSize)
   } else {
     gridSizeHigher.setAttribute("class", "grid_size_btn_red")
   }
@@ -393,7 +395,6 @@ gridSizeLower.onclick = ((e) => {
   if (gridSize > 1) {
     gridSize--
     gridSizeView.innerHTML = gridSize
-    localStorage.setItem("gridSize", gridSize)
   }
 })
 
