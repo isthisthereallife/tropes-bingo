@@ -82,8 +82,11 @@ public class TropesController {
         for (Element aTag : aTagsInLi) {
             assert aTag.parent() != null;
             if (aTag.parent().html().startsWith("<a")) {
-                TropesEntity tE = new TropesEntity(aTag.html(), aTag.absUrl("href"), aTag.parent().text(), false);
-                tropes.add(tE);
+                assert aTag.parent().parent() != null;
+                if (aTag.parent().parent().html().startsWith("<li")) {
+                    TropesEntity tE = new TropesEntity(aTag.html(), aTag.absUrl("href"), aTag.parent().text(), false);
+                    tropes.add(tE);
+                }
             }
         }
         return tropes;
@@ -92,18 +95,18 @@ public class TropesController {
     private ArrayList<TropesEntity> subPagesGetTropes(Document tropeDoc, String url) throws IOException {
         ArrayList<TropesEntity> tropes = new ArrayList<>();
 
-        String subUrl = url.substring(url.lastIndexOf("/")+1);
+        String subUrl = url.substring(url.lastIndexOf("/") + 1);
         String[] split = url.split("/");
         String uri = "";
-        for (int i =0;i<split.length-2;i++){
-            uri = uri.concat(split[i]+"/");
+        for (int i = 0; i < split.length - 2; i++) {
+            uri = uri.concat(split[i] + "/");
         }
         uri = uri.concat(subUrl);
 
         Elements subPages = tropeDoc.select("ul li a:eq(0).twikilink[title^=" + uri + "]");
 
         for (Element page : subPages) {
-            Document pageDoc = Jsoup.connect("https://tvtropes.org"+page.attributes().get("href")).get();
+            Document pageDoc = Jsoup.connect("https://tvtropes.org" + page.attributes().get("href")).get();
             tropes.addAll(basicGetTropes(pageDoc));
         }
         return tropes;

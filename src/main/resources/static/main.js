@@ -257,7 +257,7 @@ async function getAndDisplayTropes(newSearch) {
         const text = document.createElement("span")
         td.setAttribute("class", "board_item")
         td.setAttribute("id", x + "x" + y)
-        text.textContent = tropeList[z].title
+        text.innerHTML = tropeList[z].title
 
         text.setAttribute("class", "board_item_text")
         text.setAttribute("title", tropeList[z].description)
