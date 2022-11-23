@@ -40,13 +40,13 @@ a:visited {
   padding-bottom: 1vh;
 }
 #filler {
-  width: 10vw;
+  flex: 1 1 0;
 }
 #page_title {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80vw;
+  flex: 8 1 0;
   font-size: 11vw;
   user-select: none;
 }
@@ -57,6 +57,7 @@ a:visited {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  flex: 1 1 0;
 }
 
 #hamburger_div {
