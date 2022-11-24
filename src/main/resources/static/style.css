@@ -5,16 +5,6 @@
   font-family: Times, "Times New Roman", Georgia, serif;
 }
 
-/*.body {
-  animation: shake 2s;
-}*/
-
-/*.body:hover {
-  animation: shake 1s;
-  /*animation-iteration-count: infinite; 
-}
-*/
-
 a {
   color: rgb(8, 1, 64);
   text-decoration: none;
@@ -138,28 +128,10 @@ a:visited {
   margin-bottom: 4vw;
   padding-bottom: 2vw;
 }
-.grid_size_btn_red {
-  border: 1px solid black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  width: 10vw;
-  height: 10vw;
-  font-size: 10vw;
-  margin: 4vw;
-  padding-bottom: 2vw;
-  animation-name: example;
-  animation-duration: 4s;
-}
-
-@keyframes example {
-  from {
-    background-color: red;
-  }
-  to {
-    background-color: white;
-  }
+#grid_size_btn_sign {
+  place-self: center;
+  place-content: center;
+  place-items: center;
 }
 
 #search_field {
@@ -195,6 +167,9 @@ a:visited {
   min-width: 10vw;
 }
 .table_data_select_btn button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: black;
   font-weight: bold;
   font-size: 3.5vw;
@@ -206,6 +181,12 @@ a:visited {
   height: 15vw;
   border-radius: 10vw;
   cursor: pointer;
+}
+
+.select_btn_animate {
+  animation-name: border_width_grow;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
 }
 
 #board_div {
@@ -244,7 +225,6 @@ a:visited {
 #bingo_msg {
   position: absolute;
   font-size: 6em;
-  background-color: rgba(0, 191, 255, 0.7);
   border-radius: 5%;
   user-select: none;
   pointer-events: none;
@@ -255,7 +235,7 @@ a:visited {
   top: 23%;
   font-size: 1.6em;
   max-width: fit-content;
-  background-color: rgb(255, 227, 227);
+  background-color: rgb(205, 205, 205);
   border-radius: 5px;
   user-select: none;
   display: flex;
@@ -270,14 +250,14 @@ a:visited {
 /* TRANSITIONS */
 .spin {
   transform: rotate(-360deg);
-  transition: transform 3s ease-out;
+  transition: transform 2s ease-out;
 }
 /* ANIMATIONS */
 
-.shake_rotate {
-  animation-name: shake_rotate;
-  animation-iteration-count: 1;
-  animation-duration: 1s;
+.rotate {
+  animation-name: rotate;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
 }
 .shrink_grow {
   animation-name: shrink_grow;
@@ -291,39 +271,222 @@ a:visited {
   animation-duration: 0.4s;
 }
 
-@keyframes shake_rotate {
+.red_pulse {
+  animation-name: redden;
+  animation-iteration-count: 1;
+  animation-duration: 0.5s;
+
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 10vw;
+  height: 10vw;
+  font-size: 10vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
+
+  margin-top: 4vw;
+  margin-bottom: 4vw;
+  padding-bottom: 2vw;
+}
+.shrinky {
+  animation-name: shrink_grow;
+  animation-iteration-count: 1;
+  animation-duration: 0.3s;
+}
+.growy {
+  animation-name: grow_shrink;
+  animation-iteration-count: 1;
+  animation-duration: 0.3s;
+
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 10vw;
+  height: 10vw;
+  font-size: 10vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
+
+  margin-top: 4vw;
+  margin-bottom: 4vw;
+  padding-bottom: 2vw;
+}
+
+@keyframes grow_shrink {
   0% {
-    transform: translate(1px, 1px) rotate(0deg);
+    font-size: 10vw;
   }
   10% {
-    transform: translate(-1px, -2px) rotate(-30deg);
+    font-size: 11vw;
   }
   20% {
-    transform: translate(-3px, 0px) rotate(-60deg);
+    font-size: 12vw;
   }
   30% {
-    transform: translate(3px, 2px) rotate(-90deg);
+    font-size: 13vw;
   }
   40% {
-    transform: translate(1px, -1px) rotate(-130deg);
+    font-size: 14vw;
   }
   50% {
-    transform: translate(-1px, 2px) rotate(-170deg);
+    font-size: 15vw;
   }
   60% {
-    transform: translate(-3px, 1px) rotate(-210deg);
+    font-size: 14vw;
   }
   70% {
-    transform: translate(3px, 1px) rotate(-250deg);
+    font-size: 13vw;
   }
   80% {
-    transform: translate(-1px, -1px) rotate(-280deg);
+    font-size: 12vw;
   }
   90% {
-    transform: translate(1px, 2px) rotate(-320deg);
+    font-size: 11vw;
   }
   100% {
-    transform: translate(1px, -2px) rotate(360deg);
+    font-size: 10vw;
+  }
+}
+
+@keyframes shrink_grow {
+  0% {
+    font-size: 10vw;
+  }
+  10% {
+    font-size: 9vw;
+  }
+  20% {
+    font-size: 8vw;
+  }
+  30% {
+    font-size: 7vw;
+  }
+  40% {
+    font-size: 6vw;
+  }
+  50% {
+    font-size: 5vw;
+  }
+  60% {
+    font-size: 6vw;
+  }
+  70% {
+    font-size: 7vw;
+  }
+  80% {
+    font-size: 8vw;
+  }
+  90% {
+    font-size: 9vw;
+  }
+  100% {
+    font-size: 10vw;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  5% {
+    transform: rotate(-30deg);
+  }
+  10% {
+    transform: rotate(-60deg);
+  }
+  15% {
+    transform: rotate(-90deg);
+  }
+  20% {
+    transform: rotate(-130deg);
+  }
+  25% {
+    transform: rotate(-170deg);
+  }
+  30% {
+    transform: rotate(-210deg);
+  }
+  35% {
+    transform: rotate(-250deg);
+  }
+  40% {
+    transform: rotate(-280deg);
+  }
+  45% {
+    transform: rotate(-320deg);
+  }
+  50% {
+    transform: rotate(-360deg);
+  }
+  55% {
+    transform: rotate(-320deg);
+  }
+  60% {
+    transform: rotate(-280deg);
+  }
+  65% {
+    transform: rotate(-250deg);
+  }
+  70% {
+    transform: rotate(-210deg);
+  }
+  75% {
+    transform: rotate(-170deg);
+  }
+  80% {
+    transform: rotate(-130deg);
+  }
+  85% {
+    transform: rotate(-90deg);
+  }
+  90% {
+    transform: rotate(-60deg);
+  }
+  95% {
+    transform: rotate(-30deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes redden {
+  0% {
+    background-color: rgba(157, 157, 157, 0);
+  }
+  10% {
+    background-color: rgba(157, 157, 157, 0.2);
+  }
+  20% {
+    background-color: rgba(157, 157, 157, 0.4);
+  }
+  30% {
+    background-color: rgba(157, 157, 157, 0.6);
+  }
+  40% {
+    background-color: rgba(157, 157, 157, 0.8);
+  }
+  50% {
+    background-color: rgba(157, 157, 157, 1);
+  }
+  60% {
+    background-color: rgba(157, 157, 157, 0.8);
+  }
+  70% {
+    background-color: rgba(157, 157, 157, 0.6);
+  }
+  80% {
+    background-color: rgba(157, 157, 157, 0.4);
+  }
+  90% {
+    background-color: rgba(157, 157, 157, 0.2);
+  }
+  100% {
+    background-color: rgba(157, 157, 157, 0);
   }
 }
 
@@ -404,5 +567,71 @@ a:visited {
   }
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
+
+@keyframes border_width_grow {
+  0% {
+    border-width: 2vw;
+  }
+  5% {
+    border-width: 2.2vw;
+  }
+  10% {
+    border-width: 2.4vw;
+  }
+  15% {
+    border-width: 2.6vw;
+  }
+  20% {
+    border-width: 2.8vw;
+  }
+  25% {
+    border-width: 3vw;
+  }
+  30% {
+    border-width: 3.2vw;
+  }
+  35% {
+    border-width: 3.4vw;
+  }
+  40% {
+    border-width: 3.6vw;
+  }
+  45% {
+    border-width: 3.8vw;
+  }
+  50% {
+    border-width: 4vw;
+  }
+  55% {
+    border-width: 3.8vw;
+  }
+  60% {
+    border-width: 3.6vw;
+  }
+  65% {
+    border-width: 3.4vw;
+  }
+  70% {
+    border-width: 3.2vw;
+  }
+  75% {
+    border-width: 3vw;
+  }
+  80% {
+    border-width: 2.8vw;
+  }
+  85% {
+    border-width: 2.6vw;
+  }
+  90% {
+    border-width: 2.4vw;
+  }
+  95% {
+    border-width: 2.2vw;
+  }
+  100% {
+    border-width: 2vw;
   }
 }

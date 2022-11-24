@@ -10,6 +10,7 @@ let hamburgerDiv = document.getElementById("hamburger_div")
 let hamburgerSearchDiv = document.getElementById("hamburger_search_div")
 let gridSizeView = document.getElementById("grid_size")
 let gridSizeLower = document.getElementById("grid_size_lower")
+let gridSizeLowerSign = document.getElementById("grid_size_lower_sign")
 let gridSizeHigher = document.getElementById("grid_size_higher")
 let reroll = document.getElementById("reroll")
 let rerollDiv = document.getElementById("reroll_div")
@@ -22,11 +23,25 @@ let currentMovieDiv = document.getElementById("current_movie")
 let touchTimer
 let touchDuration = 500
 let onLongTouch
+let moved = false
+
+//monochrome
+/*
+let rgbTickedBgColor = "rgb(43, 43, 43)"
+let rgbTickedTextColor = "rgb(255,255,255)"
+let rgbBingoMsgBgColor = "rgba(157, 157, 157)";
+
+*/
+
+let rgbBingoMsgColor = "rgb(0, 191, 255)"
+let rgbTickedBgColor = "rgb(159, 6, 6)"
+let rgbTickedTextColor = "rgb(255,255,255)"
 
 let descrMsg = document.createElement("span")
 let bingoMsg = document.createElement("span")
 descrMsg.setAttribute("id", "descr_msg")
 bingoMsg.setAttribute("id", "bingo_msg")
+bingoMsg.style.setProperty("background-color", rgbBingoMsgColor)
 
 //kolla i localStorage här
 
@@ -66,14 +81,20 @@ function listener(event) {
 
   switch (event.type) {
     case "animationstart":
-
       break
 
     case "animationend":
+
       if (event.target.id === "hembrgr") {
         hembrgr.removeAttribute("class")
       } else if (event.target.id === "reroll") {
         reroll.removeAttribute("class")
+      } else if (event.target.id === "grid_size_higher") {
+        gridSizeHigher.setAttribute("class", "grid_size_btn")
+      } else if (event.target.id === "grid_size_lower") {
+        gridSizeLower.setAttribute("class", "grid_size_btn")
+      } else if (event.target.id === "grid_size_lower_sign") {
+        gridSizeLowerSign.removeAttribute("class")
       }
       break
 
@@ -106,8 +127,8 @@ if (searchField.value.length > 0) {
 reroll.addEventListener("animationstart", listener, false)
 reroll.addEventListener("animationend", listener, false)
 
-reroll.onclick = ((e) => {
-  reroll.setAttribute("class", "spin")
+reroll.onclick = (async (e) => {
+  reroll.setAttribute("class", "rotate")
   /* hide hamburger on reroll?
   hamburgerDiv.setAttribute("class", "hamburger_div_close")
   hembrgr.setAttribute("src", "Images/hembrgr.png")
@@ -116,7 +137,8 @@ reroll.onclick = ((e) => {
   tropeList = null
   localStorage.removeItem("tropeList")
   localStorage.setItem("gridSize", gridSize)
-  getAndDisplayTropes()
+  await getAndDisplayTropes()
+  reroll.removeAttribute("class")
 })
 
 hamburgerSearchDiv.onclick = ((e) => {
@@ -187,19 +209,24 @@ function populateSearchResults(searchResults) {
       selectBtn.textContent = "Pick"
       selectBtn.setAttribute("link", item.address)
       selectBtn.setAttribute("title", item.title)
-
       tableDataSelect.appendChild(selectBtn)
 
 
       tableDataSelect.onclick = (async (e) => {
+        selectBtn.setAttribute("class", "select_btn_animate")
         currentMovieDiv.textContent = e.target.attributes.title.nodeValue
         hamburgerDiv.setAttribute("class", "hamburger_div_close")
         hembrgr.setAttribute("src", "Images/hembrgr.png")
         localStorage.setItem("currentWorkTitle", e.target.attributes.title.nodeValue)
         localStorage.setItem("currentWorkUrl", e.target.attributes.link.nodeValue)
         localStorage.setItem("gridSize", gridSize)
-        getAndDisplayTropes(true)
+        await getAndDisplayTropes(true)
+        selectBtn.removeAttribute("class")
       })
+
+
+      selectBtn.addEventListener("animationstart", listener, false)
+      selectBtn.addEventListener("animationend", listener, false)
 
       tableData.append(tableDataImg)
       tableData.append(tableDataInfo)
@@ -265,9 +292,8 @@ async function getAndDisplayTropes(newSearch) {
         td.setAttribute("address", tropeList[z].address)
         td.setAttribute("ticked", tropeList[z].ticked)
         if (tropeList[z].ticked === true) {
-          td.style.setProperty("background-color", "rgb(159, 6, 6)")
-          td.style.setProperty("color", "rgb(255, 255, 255)")
-
+          td.style.setProperty("background-color", rgbTickedBgColor)
+          td.style.setProperty("color", rgbTickedTextColor)
         }
 
 
@@ -304,20 +330,22 @@ async function getAndDisplayTropes(newSearch) {
 
 
         function onLongTouch() {
-          descrMsg.innerText = td.getAttribute("title")
-          let spanForA = document.createElement("span")
+          if (!moved) {
+            descrMsg.innerText = td.getAttribute("title")
+            let spanForA = document.createElement("span")
 
-          let a = document.createElement("a")
-          a.href = td.getAttribute("address")
-          a.target = "_blank"
-          a.innerText = "\nLink to trope page."
-          spanForA.appendChild(a)
-          descrMsg.append(spanForA)
-          board_div.append(descrMsg)
-          descrMsg.onclick = ((e) => {
-            descrMsg.innerText = ""
-            board_div.removeChild(descrMsg)
-          })
+            let a = document.createElement("a")
+            a.href = td.getAttribute("address")
+            a.target = "_blank"
+            a.innerText = "\nLink to trope page."
+            spanForA.appendChild(a)
+            descrMsg.append(spanForA)
+            board_div.append(descrMsg)
+            descrMsg.onclick = ((e) => {
+              descrMsg.innerText = ""
+              board_div.removeChild(descrMsg)
+            })
+          }
         }
 
         td.ontouchmove = ((e) => {
@@ -325,6 +353,7 @@ async function getAndDisplayTropes(newSearch) {
             clearTimeout(touchTimer)
             touchTimer = null
           }
+          moved = true
         }, { passive: true })
 
         td.ontouchstart = ((e) => {
@@ -341,9 +370,10 @@ async function getAndDisplayTropes(newSearch) {
             clearTimeout(touchTimer)
             touchTimer = null
           }
-          if (descrMsg.innerText === "") {
+          if (descrMsg.innerText === "" && !moved) {
             td.click()
           }
+          moved = false
         })
 
         td.onclick = ((e) => {
@@ -361,8 +391,8 @@ async function getAndDisplayTropes(newSearch) {
             }
             else {
               td.setAttribute("ticked", "true")
-              td.style.setProperty("background-color", "rgb(159, 6, 6)")
-              td.style.setProperty("color", "rgb(255, 255, 255)")
+              td.style.setProperty("background-color", rgbTickedBgColor)
+              td.style.setProperty("color", rgbTickedTextColor)
               tropeList.find(e => e.address === td.getAttribute("address")).ticked = true
 
             }
@@ -382,6 +412,7 @@ async function getAndDisplayTropes(newSearch) {
     board_div.append(board)
     reroll.removeAttribute("class")
 
+
   }
   checkForBingo()
 }
@@ -392,16 +423,30 @@ gridSizeHigher.onclick = ((e) => {
   if (gridSize < 5) {
     gridSize++
     gridSizeView.innerHTML = gridSize
+    gridSizeHigher.setAttribute("class", "growy")
+
   } else {
-    gridSizeHigher.setAttribute("class", "grid_size_btn_red")
+    gridSizeHigher.setAttribute("class", "red_pulse")
   }
 })
 gridSizeLower.onclick = ((e) => {
   if (gridSize > 1) {
     gridSize--
     gridSizeView.innerHTML = gridSize
+    gridSizeLowerSign.setAttribute("class", "shrinky")
+  }
+  else {
+    gridSizeLower.setAttribute("class", "red_pulse")
   }
 })
+
+
+gridSizeHigher.addEventListener("animationstart", listener, false)
+gridSizeHigher.addEventListener("animationend", listener, false)
+gridSizeLower.addEventListener("animationstart", listener, false)
+gridSizeLower.addEventListener("animationend", listener, false)
+
+
 
 function checkForBingo() {
   let boardSize = board.rows.length
