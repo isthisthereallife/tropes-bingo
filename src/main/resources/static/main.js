@@ -55,7 +55,7 @@ let tropeList = JSON.parse(localStorage.getItem("tropeList"))
 if (tropeList !== null) {
   let currentMovie = localStorage.getItem("currentWorkTitle")
   if (currentMovie !== null) {
-    currentMovieDiv.textContent = currentMovie
+    currentMovieDiv.innerHTML = currentMovie
   }
 
   getAndDisplayTropes()
@@ -71,9 +71,8 @@ searchField.oninput = ((e) => {
 })
 async function searches(input, pageNr) {
   let searchResults = await searchFromUserInput(input, pageNr)
-  populateSearchResults(searchResults)
+  populateSearchResults(searchResults, pageNr)
 }
-let wow = document.getElementById("wow_such_animate")
 
 hembrgr.addEventListener("animationstart", listener, false)
 hembrgr.addEventListener("animationend", listener, false)
@@ -161,8 +160,8 @@ hamburgerSearchDiv.onclick = ((e) => {
 
 })
 
-function populateSearchResults(searchResults) {
-  table.replaceChildren()
+function populateSearchResults(searchResults, pageNr = 1) {
+  if (pageNr === 1) table.replaceChildren()
   if (searchResults === null || !searchResults.length) {
     let nothinDiv = document.createElement("div")
     nothinDiv.setAttribute("class", "search_a")
@@ -189,7 +188,7 @@ function populateSearchResults(searchResults) {
       tableDataImg.appendChild(img)
       let a = document.createElement("a")
       a.setAttribute("href", `https://tvtropes.org` + item.address)
-
+      console.log("item.title= ", item.title)
       let title = document.createElement("strong")
       title.innerHTML = item.title
       title.style.setProperty("font-size", "5vw")
@@ -214,7 +213,8 @@ function populateSearchResults(searchResults) {
 
       tableDataSelect.onclick = (async (e) => {
         selectBtn.setAttribute("class", "select_btn_animate")
-        currentMovieDiv.textContent = e.target.attributes.title.nodeValue
+        console.log(e.target.attributes.title.nodeValue)
+        currentMovieDiv.innerHTML = e.target.attributes.title.nodeValue
         hamburgerDiv.setAttribute("class", "hamburger_div_close")
         hembrgr.setAttribute("src", "Images/hembrgr.png")
         localStorage.setItem("currentWorkTitle", e.target.attributes.title.nodeValue)
@@ -241,6 +241,19 @@ function populateSearchResults(searchResults) {
 
     }
   }
+  const loadDiv = document.createElement("div")
+  loadDiv.setAttribute("id", "load_div")
+  const loadMorePagesBtn = document.createElement("button")
+  loadMorePagesBtn.textContent = "Show more results"
+  loadMorePagesBtn.setAttribute("id", "load_more_pages_btn")
+
+  loadDiv.appendChild(loadMorePagesBtn)
+  table.appendChild(loadDiv)
+
+  loadMorePagesBtn.onclick = (async (e) => {
+    searches(searchField.value, pageNr + 1)
+    table.removeChild(loadDiv)
+  })
 
 }
 
@@ -410,6 +423,9 @@ async function getAndDisplayTropes(newSearch) {
       board.append(tr)
     }
     board_div.append(board)
+    const hr = document.createElement("hr")
+    hr.setAttribute("width", "100%")
+    board_div.append(hr)
     reroll.removeAttribute("class")
 
 

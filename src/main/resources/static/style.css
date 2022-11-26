@@ -140,6 +140,12 @@ a:visited {
   width: 90vw;
 }
 
+#load_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #search_results_table {
   display: block;
   width: 96vw;
@@ -191,6 +197,7 @@ a:visited {
 
 #board_div {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
