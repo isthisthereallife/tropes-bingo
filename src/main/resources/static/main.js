@@ -17,19 +17,34 @@ let rerollDiv = document.getElementById("reroll_div")
 let searchImg = document.getElementById("search_img")
 let currentMovieDiv = document.getElementById("current_movie")
 
-
+let observeTrigger = document.createElement("span")
 
 let touchTimer
 let touchDuration = 500
 let onLongTouch
 let moved = false
 
+
+let options = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0
+}
+let observer = new IntersectionObserver(function getMoreSearchResults(entries, observer) {
+  entries.forEach((entry) => {
+    // it runs one time immediately  when it starts observing, hence this check
+    if (entry.isIntersecting) {
+      searches(searchField.value, parseInt(entry.target.getAttribute("page")) + 1)
+    }
+  }, options)
+})
+
 //monochrome
 /*
 let rgbTickedBgColor = "rgb(43, 43, 43)"
 let rgbTickedTextColor = "rgb(255,255,255)"
 let rgbBingoMsgBgColor = "rgba(157, 157, 157)";
-
+ 
 */
 
 let rgbBingoMsgColor = "rgb(0, 191, 255)"
@@ -73,6 +88,7 @@ searchField.oninput = ((e) => {
   } else { table.replaceChildren() }
 })
 async function searches(input, pageNr) {
+  observer.unobserve(observeTrigger)
   let searchResults = await searchFromUserInput(input, pageNr)
   populateSearchResults(searchResults, pageNr)
 }
@@ -177,6 +193,7 @@ function populateSearchResults(searchResults, pageNr = 1) {
       tableData.setAttribute("class", "search_a")
       let tr = document.createElement("tr")
       tr.setAttribute("class", "search_result_row")
+      tr.setAttribute("page", pageNr)
       let tableDataImg = document.createElement("td")
       tableDataImg.setAttribute("class", "table_data_img")
       let tableDataInfo = document.createElement("td")
@@ -226,7 +243,6 @@ function populateSearchResults(searchResults, pageNr = 1) {
         selectBtn.removeAttribute("class")
       })
 
-
       selectBtn.addEventListener("animationstart", listener, false)
       selectBtn.addEventListener("animationend", listener, false)
 
@@ -234,29 +250,26 @@ function populateSearchResults(searchResults, pageNr = 1) {
       tableData.append(tableDataInfo)
       tr.append(tableData)
       tr.append(tableDataSelect)
-
       table.append(tr)
-
       table.append(document.createElement("hr"))
 
+
+      //måste sätta den här och kolla om: listan är lång +  vi är i slutet av den
+
+      //this number is quite arbitrary
+      if (searchResults.length > 19 && item.address === searchResults[searchResults.length - 5].address) {
+
+        observeTrigger = tr
+
+
+        observer.observe(observeTrigger)
+
+      }
 
 
     }
 
-    const loadDiv = document.createElement("div")
-    loadDiv.setAttribute("id", "load_div")
-    const loadMorePagesBtn = document.createElement("button")
-    loadMorePagesBtn.textContent = "Show more results"
-    loadMorePagesBtn.setAttribute("id", "load_more_pages_btn")
 
-    loadDiv.appendChild(loadMorePagesBtn)
-    table.appendChild(loadDiv)
-
-    loadMorePagesBtn.onclick = (async (e) => {
-      searches(searchField.value, pageNr + 1)
-      table.removeChild(loadDiv)
-      board_div.scrollIntoView()
-    })
   }
 }
 

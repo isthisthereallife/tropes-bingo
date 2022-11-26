@@ -23,13 +23,6 @@ public class TropesController {
     public String searchForItem(@PathVariable String query, @PathVariable int pageNumber) throws IOException {
         try {
             Document searchDoc = Jsoup.connect("https://tvtropes.org/pmwiki/elastic_search_result.php?q=" + query + "&page_type=all&search_type=article&page=" + pageNumber).get();
-            //get total number of page results
-            Elements paginationNav = searchDoc.select("nav.pagination-box[data-total-pages]");
-            //should be only one, but let's loop it to be sure
-            for (Element e : paginationNav) {
-                System.out.println("\ndata-total-pages ===== " + e.attr("data-total-pages"));
-            }
-
             Elements searchResults = searchDoc.select("a.search-result");
             ArrayList<SearchResultEntity> searchResultEntities = new ArrayList<>();
 
