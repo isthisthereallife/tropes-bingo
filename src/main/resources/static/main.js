@@ -19,7 +19,6 @@ let currentMovieDiv = document.getElementById("current_movie")
 
 
 
-
 let touchTimer
 let touchDuration = 500
 let onLongTouch
@@ -49,13 +48,17 @@ let gridSize = localStorage.getItem("gridSize")
 if (gridSize === null) gridSize = 4
 gridSizeView.innerHTML = gridSize
 
-/*kolla localStorage, om det finnst tropes där så kan vi ju skicka in dom i denna */
+currentMovieDiv.target = "_blank"
 
+/*kolla localStorage, om det finnst tropes där så kan vi ju skicka in dom i denna */
 let tropeList = JSON.parse(localStorage.getItem("tropeList"))
 if (tropeList !== null) {
   let currentMovie = localStorage.getItem("currentWorkTitle")
   if (currentMovie !== null) {
     currentMovieDiv.innerHTML = currentMovie
+    if (localStorage.getItem("currentWorkUrl") !== null) {
+      currentMovieDiv.setAttribute("href", "https://tvtropes.org" + localStorage.getItem("currentWorkUrl"))
+    }
   }
 
   getAndDisplayTropes()
@@ -188,7 +191,6 @@ function populateSearchResults(searchResults, pageNr = 1) {
       tableDataImg.appendChild(img)
       let a = document.createElement("a")
       a.setAttribute("href", `https://tvtropes.org` + item.address)
-      console.log("item.title= ", item.title)
       let title = document.createElement("strong")
       title.innerHTML = item.title
       title.style.setProperty("font-size", "5vw")
@@ -213,8 +215,8 @@ function populateSearchResults(searchResults, pageNr = 1) {
 
       tableDataSelect.onclick = (async (e) => {
         selectBtn.setAttribute("class", "select_btn_animate")
-        console.log(e.target.attributes.title.nodeValue)
         currentMovieDiv.innerHTML = e.target.attributes.title.nodeValue
+        currentMovieDiv.setAttribute("href", "https://tvtropes.org" + e.target.attributes.link.nodeValue)
         hamburgerDiv.setAttribute("class", "hamburger_div_close")
         hembrgr.setAttribute("src", "Images/hembrgr.png")
         localStorage.setItem("currentWorkTitle", e.target.attributes.title.nodeValue)
@@ -240,21 +242,22 @@ function populateSearchResults(searchResults, pageNr = 1) {
 
 
     }
+
+    const loadDiv = document.createElement("div")
+    loadDiv.setAttribute("id", "load_div")
+    const loadMorePagesBtn = document.createElement("button")
+    loadMorePagesBtn.textContent = "Show more results"
+    loadMorePagesBtn.setAttribute("id", "load_more_pages_btn")
+
+    loadDiv.appendChild(loadMorePagesBtn)
+    table.appendChild(loadDiv)
+
+    loadMorePagesBtn.onclick = (async (e) => {
+      searches(searchField.value, pageNr + 1)
+      table.removeChild(loadDiv)
+      board_div.scrollIntoView()
+    })
   }
-  const loadDiv = document.createElement("div")
-  loadDiv.setAttribute("id", "load_div")
-  const loadMorePagesBtn = document.createElement("button")
-  loadMorePagesBtn.textContent = "Show more results"
-  loadMorePagesBtn.setAttribute("id", "load_more_pages_btn")
-
-  loadDiv.appendChild(loadMorePagesBtn)
-  table.appendChild(loadDiv)
-
-  loadMorePagesBtn.onclick = (async (e) => {
-    searches(searchField.value, pageNr + 1)
-    table.removeChild(loadDiv)
-  })
-
 }
 
 

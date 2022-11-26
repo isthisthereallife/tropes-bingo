@@ -29,7 +29,7 @@ public class TropesController {
             for (Element e : paginationNav) {
                 System.out.println("\ndata-total-pages ===== " + e.attr("data-total-pages"));
             }
-            
+
             Elements searchResults = searchDoc.select("a.search-result");
             ArrayList<SearchResultEntity> searchResultEntities = new ArrayList<>();
 

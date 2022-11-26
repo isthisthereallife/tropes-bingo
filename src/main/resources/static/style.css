@@ -16,6 +16,10 @@ a:visited {
 .result_title {
   text-decoration: underline;
 }
+header {
+  display: flex;
+  flex-direction: column;
+}
 .header {
   display: flex;
   flex-direction: column;
@@ -95,6 +99,10 @@ a:visited {
 #hamburger_search_div {
   display: none;
 }
+#current_movie_div {
+  display: flex;
+  justify-content: center;
+}
 #current_movie {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
@@ -105,6 +113,9 @@ a:visited {
   justify-content: center;
   padding-bottom: 3vw;
   height: 2vh;
+  width: fit-content;
+  color: black;
+  text-decoration: underline;
 }
 
 #reroll_div {
