@@ -240,6 +240,14 @@ header {
   overflow: hidden;
 }
 
+#load_more_pages_btn {
+  background-color: whitesmoke;
+  border-radius: 10px;
+  border: 1px solid black;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
 #bingo_msg {
   position: absolute;
   font-size: 6em;
