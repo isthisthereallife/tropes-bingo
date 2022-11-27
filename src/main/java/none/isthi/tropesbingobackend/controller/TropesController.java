@@ -22,7 +22,7 @@ public class TropesController {
     @GetMapping("search/{query}/{pageNumber}")
     public String searchForItem(@PathVariable String query, @PathVariable int pageNumber) throws IOException {
         try {
-            Document searchDoc = Jsoup.connect("https://tvtropes.org/pmwiki/elastic_search_result.php?q=" + query + "&page_type=all&search_type=article&page=" + pageNumber).get();
+            Document searchDoc = Jsoup.connect("https://tvtropes.org/pmwiki/elastic_search_result.php?q=" + query + "&page_type=work&search_type=article&page=" + pageNumber).get();
             Elements searchResults = searchDoc.select("a.search-result");
             ArrayList<SearchResultEntity> searchResultEntities = new ArrayList<>();
 
