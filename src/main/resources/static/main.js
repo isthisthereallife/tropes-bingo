@@ -12,6 +12,7 @@ let gridSizeView = document.getElementById("grid_size")
 let gridSizeLower = document.getElementById("grid_size_lower")
 let gridSizeLowerSign = document.getElementById("grid_size_lower_sign")
 let gridSizeHigher = document.getElementById("grid_size_higher")
+let gridSizeHigherSign = document.getElementById("grid_size_higher_sign")
 let reroll = document.getElementById("reroll")
 let rerollDiv = document.getElementById("reroll_div")
 let searchImg = document.getElementById("search_img")
@@ -26,8 +27,8 @@ let moved = false
 
 //force small window size
 if (window.innerWidth >= 1080) {
-  window.innerWidth = 600
-  window.innerHeight = 400
+  window.innerWidth = 300
+  window.innerHeight = 300
 }
 
 let options = {
@@ -118,6 +119,8 @@ function listener(event) {
         gridSizeLower.setAttribute("class", "grid_size_btn")
       } else if (event.target.id === "grid_size_lower_sign") {
         gridSizeLowerSign.removeAttribute("class")
+      } else if (event.target.id === "grid_size_higher_sign") {
+        gridSizeHigherSign.removeAttribute("class")
       }
       break
 
@@ -460,7 +463,7 @@ gridSizeHigher.onclick = ((e) => {
   if (gridSize < 5) {
     gridSize++
     gridSizeView.innerHTML = gridSize
-    gridSizeHigher.setAttribute("class", "growy")
+    gridSizeHigherSign.setAttribute("class", "growy")
 
   } else {
     gridSizeHigher.setAttribute("class", "red_pulse")
