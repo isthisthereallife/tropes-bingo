@@ -24,6 +24,11 @@ let touchDuration = 500
 let onLongTouch
 let moved = false
 
+//force small window size
+if (window.innerWidth >= 1080) {
+  window.innerWidth = 600
+  window.innerHeight = 400
+}
 
 let options = {
   root: null,

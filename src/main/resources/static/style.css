@@ -30,7 +30,7 @@ header {
   align-items: center;
   flex-direction: row;
   font-style: italic;
-  height: 8vh;
+  height: 80px;
   padding-top: 1vh;
   padding-bottom: 1vh;
 }
@@ -42,12 +42,11 @@ header {
   justify-content: center;
   align-items: center;
   flex: 8 1 0;
-  font-size: 11vw;
+  font-size: 2.5em;
   user-select: none;
 }
 #hamburger_icon {
   font-size: 1.3em;
-  width: 10vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,7 +74,7 @@ header {
   justify-content: space-around;
   align-items: center;
   border-bottom: 1px dotted grey;
-  font-size: 8vw;
+  font-size: 2em;
   margin-top: 2vw;
   margin-bottom: 2vw;
 }
