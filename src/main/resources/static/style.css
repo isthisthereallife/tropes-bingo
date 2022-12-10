@@ -138,7 +138,6 @@ header {
   place-content: center;
   place-items: center;
 }
-
 #search_field {
   display: flex;
   justify-content: center;
@@ -340,6 +339,10 @@ header {
     height: 100px;
   }
 
+  #search_prompt {
+    font-size: 2em;
+  }
+  
   .grid_size_btn {
     border: 1px solid black;
     display: flex;
