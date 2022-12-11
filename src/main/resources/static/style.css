@@ -75,8 +75,6 @@ header {
   align-items: center;
   border-bottom: 1px dotted grey;
   font-size: 2em;
-  margin-top: 2vw;
-  margin-bottom: 2vw;
 }
 .hamburger_item:nth-of-type(1) {
   border-top: 1px dotted grey;
@@ -342,7 +340,7 @@ header {
   #search_prompt {
     font-size: 2em;
   }
-  
+
   .grid_size_btn {
     border: 1px solid black;
     display: flex;
@@ -351,7 +349,7 @@ header {
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    font-size: 1em;
+    font-size: 1.4em;
     margin: 1vw 2vw;
     padding-bottom: 1vw;
   }
