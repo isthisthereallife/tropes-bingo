@@ -41,7 +41,7 @@ public class TropesController {
 
     @PostMapping("/{gridSizeInt}")
     public String getTropes(@PathVariable int gridSizeInt, @RequestBody String url) throws JsonProcessingException {
-        //supplying the end part of a url to a film
+        //supplying the end part of an url to a film
         //cut out the tropes, add to this list
         int gridSize = gridSizeInt;
         if (5 <= gridSize) gridSize = 5;
